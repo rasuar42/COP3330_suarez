@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Scanner;
+import  java.lang.Math;
 
 public class App {
     public static void main(String[] args) {
@@ -23,14 +24,14 @@ public class App {
     public static double getUserHeight()
     {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter your Height (inches): ");
+        System.out.print("Enter your Height (inches): ");
 
         double height = sc.nextDouble();
         String buff = sc.nextLine();    //Input Buffer
 
         while(height < 0)
         {
-            System.out.println("Please enter a positive number: ");
+            System.out.print("Please enter a positive number: ");
             height = sc.nextDouble();
             buff = sc.nextLine();   //Input Buffer
         }
@@ -41,36 +42,34 @@ public class App {
     public static double getUserWeight()
     {
         Scanner sc = new Scanner(System.in);
-        System.out.println("Enter your Weight (pounds):");
+        System.out.print("Enter your Weight (pounds): ");
 
         double weight = sc.nextDouble();
         String buff = sc.nextLine();   //Input Buffer
 
         while(weight < 0)
         {
-            System.out.println("Please enter a positive number: ");
+            System.out.print("Please enter a positive number: ");
             weight = sc.nextDouble();
             buff = sc.nextLine();   //Input Buffer
         }
-
         return weight;
     }
 
     public static boolean moreInput()
     {
         Scanner sc = new Scanner(System.in);
-        System.out.println("More Input? (Y/N): ");
-        String in = sc.nextLine();
+        System.out.print("More Input? (Y/N): ");
+        String in = sc.next();
         String buff = sc.nextLine();   //Input Buffer
 
         //Checks if other letters are pressed
         while(in.equalsIgnoreCase("y") && in.equalsIgnoreCase("n"))
         {
-            System.out.println("More Input? (Y/N): ");
-            in = sc.nextLine();
+            System.out.print("More Input? Enter 'Y' or 'N': ");
+            in = sc.next();
             buff = sc.nextLine();   //Input Buffer
         }
-
         return in.equalsIgnoreCase("y"); //if 'y' return true else false
     }
 
@@ -78,8 +77,7 @@ public class App {
     {
         double temp = obj.calcBMI();
         System.out.println("Your BMI: " + temp);
-        System.out.print("Category: ");
-        System.out.print(obj.categorize());
+        System.out.println("Category: " + obj.categorize());
     }
 
     public static void displayBmiStatistics(ArrayList<BodyMassIndex> bmiList)
@@ -92,8 +90,8 @@ public class App {
             bmiSum += obj.calcBMI();
         }
         bmiAvg = bmiSum/len;
+        bmiAvg = (double)Math.round(bmiAvg * 10) / 10;
 
         System.out.println("Average BMI: " + bmiAvg);
     }
-
 }
