@@ -15,6 +15,8 @@ public class BodyMassIndex {
     }
 
     //Helper Functions
+
+    /* Unneeded Functions
     public double getHeight() {
         return height;
     }
@@ -22,6 +24,7 @@ public class BodyMassIndex {
     public double getWeight() {
         return weight;
     }
+    */
 
     public double getBMI() {
         return BMI;
@@ -30,6 +33,6 @@ public class BodyMassIndex {
     private static double calcBMI(double h, double w)
     {
         double temp = (703 * w) / (h * h);
-        return Math.round(temp * 10) / 10;  //rounded one number after decimal
+        return (double)Math.round(temp * 10) / 10;  //rounded one number after decimal
     }
 }
