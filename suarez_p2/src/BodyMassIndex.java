@@ -1,5 +1,3 @@
-import  java.lang.Math;
-
 public class BodyMassIndex {
     private final double height;
     private final double weight;
