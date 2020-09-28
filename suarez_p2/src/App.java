@@ -63,6 +63,7 @@ public class App {
         String in = sc.nextLine();
         String buff = sc.nextLine();   //Input Buffer
 
+        //Checks if other letters are pressed
         while(in.equalsIgnoreCase("y") && in.equalsIgnoreCase("n"))
         {
             System.out.println("More Input? (Y/N): ");
@@ -75,33 +76,22 @@ public class App {
 
     public static void displayBmiInfo(BodyMassIndex obj)
     {
-        double temp = obj.getBMI();
+        double temp = obj.calcBMI();
         System.out.println("Your BMI: " + temp);
         System.out.print("Category: ");
-
-        //Set Category
-        if(temp > 29.9) {
-            System.out.println("Obese");
-        }else if(temp > 24.9) {
-            System.out.println("Overweight");
-        }else if(temp > 18.4) {
-            System.out.println("Normal Weight");
-        }else{
-            System.out.println("Underweight");
-        }
-        System.out.print("Category: ");
+        System.out.print(obj.categorize());
     }
 
-    public static void displayBmiStatistics(ArrayList<BodyMassIndex> bmiArr)
+    public static void displayBmiStatistics(ArrayList<BodyMassIndex> bmiList)
     {
-        int arrLen = bmiArr.size();
-        int bmiSum = 0;
-        int bmiAvg = 0;
+        int len = bmiList.size();
+        double bmiSum = 0;
+        double bmiAvg = 0;
 
-        for(BodyMassIndex obj : bmiArr) {
-            bmiSum += obj.getBMI();
+        for(BodyMassIndex obj : bmiList) {
+            bmiSum += obj.calcBMI();
         }
-        bmiAvg = bmiSum/arrLen;
+        bmiAvg = bmiSum/len;
 
         System.out.println("Average BMI: " + bmiAvg);
     }
