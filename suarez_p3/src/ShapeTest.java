@@ -51,7 +51,7 @@ class ShapeTest {
     @Test
     public void testCircleArea() {
         Shape2D shape = new Circle(10);
-        assertEquals(50, shape.getArea());
+        assertEquals(314.16, shape.getArea(), 0.01);
     }
 
     @Test

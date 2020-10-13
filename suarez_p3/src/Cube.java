@@ -14,10 +14,10 @@ public class Cube extends Shape3D{
     }
 
     public double getArea() {
-        return edge*edge;
+        return 6 * edge*edge;
     }
 
     public double getVolume() {
-        return 6*getArea();
+        return edge*edge*edge;
     }
 }
