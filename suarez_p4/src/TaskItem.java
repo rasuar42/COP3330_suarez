@@ -10,8 +10,7 @@ public class TaskItem {
     private boolean complete;
 
     //Constructor
-    public TaskItem(String taskTitle, String taskDescription, String taskDate)
-    {
+    public TaskItem(String taskTitle, String taskDescription, String taskDate) {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
         formatter.setLenient(false);
         try {
@@ -73,30 +72,6 @@ public class TaskItem {
     }
 
     //Setters
-    public void setTaskTitle(String taskTitle) {
-        try {
-            if(validTitleSize(taskTitle)) {
-                this.taskTitle = taskTitle;
-            }else{
-                throw new Exception();
-            }
-        }catch (Exception e) {
-            System.out.println("WARNING: title must be at least 1 character long; task not created");
-        }
-    }
-    public void setTaskDescription(String taskDescription) {
-        this.taskDescription = taskDescription;
-    }
-    public void setTaskDate(String taskDate) {
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-        formatter.setLenient(false);
-        try {
-                this.taskDate = formatter.parse(taskDate);
-        }catch (ParseException e) {
-            System.out.println("WARNING: invalid due date; task not created");
-        }
-
-    }
     public void setComplete(boolean complete) {
         this.complete = complete;
     }

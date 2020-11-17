@@ -1,7 +1,11 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class TaskList {
@@ -16,23 +20,7 @@ public class TaskList {
         taskList = new ArrayList<TaskItem>();
         size = 0;
     }
-    public TaskList(String str){
-        try {
-            File file = new File(str);
-            Scanner reader = new Scanner(file);
-            taskList = new ArrayList<TaskItem>(); //Initialize List
-            size = reader.nextInt(); //set size
-            TaskItem item;
-            //Load Items to List
-            for(int i = 0; i < size; i++) {
-                item = new TaskItem(reader.nextLine(), reader.nextLine(), reader.nextLine());
-                reader.nextLine();
-                taskList.add(item);
-            }
-        }catch (FileNotFoundException e) {
-            System.out.println("WARNING: File Not Found");
-        }
-    }
+
 
     //Useful Functions
     public void displayTask() {
@@ -41,7 +29,7 @@ public class TaskList {
             if(taskList.get(i).isComplete()) {
                 System.out.print("*** ");
             }
-            System.out.println("[" + taskList.get(i).getTaskDate()+ "] " + taskList.get(i).getTaskTitle() + ": " + taskList.get(i).getTaskDescription() + "\n");
+            System.out.println("[" + taskList.get(i).getTaskDate()+ "] " + taskList.get(i).getTaskTitle() + ": " + taskList.get(i).getTaskDescription());
         }
     }
     public void displayComplete() {
@@ -74,8 +62,9 @@ public class TaskList {
 
         }
     }
-    public void addTask(TaskItem task) {
-        taskList.add(task);
+    public void addTask(String title, String description, String date) {
+        TaskItem item = new TaskItem(title, description, date);
+        taskList.add(item);
         size++;
     }
     public void removeTask(int i) {
@@ -87,15 +76,52 @@ public class TaskList {
         }
     }
     public void saveList(String str){
-        try{
-            File file = new File(str);
-            if (file.createNewFile()) {
-                System.out.println("task list has been created");
-            } else {
-                System.out.println("file already exists.");
+        File file = new File(str);
+
+        try {
+            FileWriter writer = new FileWriter(str);
+            writer.write(size + "\n");
+            for(int i = 0; i < size; i++){
+                writer.write(taskList.get(i).getTaskTitle() + "\n");
+                writer.write(taskList.get(i).getTaskDescription() + "\n");
+                writer.write(taskList.get(i).getTaskDate() + "\n");
+                writer.write(taskList.get(i).isComplete() + "\n");
+                writer.write("\n");
             }
-        }catch(IOException e){
-            System.out.println("Have not gotter nere yet");
+            writer.write("----------");
+            writer.close();
+        }catch (IOException e){
+            System.out.println("WARNING: there was an error writing to the file");
+        }
+
+    }
+    public void loadList(String str) {
+        try {
+            File file = new File(str);
+            Scanner reader = new Scanner(file);
+            size = Integer.parseInt(reader.nextLine()); //set size
+            TaskItem item;
+            String title;
+            String description;
+            String date;
+            boolean complete;
+            //Load Items to List
+            for (int i = 0; i < size; i++) {
+                title = reader.nextLine();
+                description = reader.nextLine();
+                date = reader.nextLine();
+                item = new TaskItem(title, description, date);
+                item.setComplete(Boolean.parseBoolean(reader.nextLine()));
+                reader.nextLine();
+                taskList.add(item);
+            }
+            reader.close();
+        }catch (FileNotFoundException e) {
+            System.out.println("WARNING: File Not Found");
+        }catch (NoSuchElementException e) {
+            System.out.println("WARNING: file is corrupted");
+        }catch (Exception e) {
+            System.out.println("WARNING: unexpected error");
         }
     }
     public void setTaskComplete(int i) {
@@ -120,6 +146,13 @@ public class TaskList {
             item.editTaskItem(title, description, date);
         }catch (IndexOutOfBoundsException e) {
             System.out.println("WARNING: task is not in list");
+        }
+    }
+    public boolean equals(TaskList list){
+        if (this.size == list.getSize() && this.taskList.equals(list.getTaskList())){
+            return true;
+        }else {
+            return false;
         }
     }
 
