@@ -210,21 +210,12 @@ public class ContactApp extends TaskApp {
             Scanner in = new Scanner(System.in);
             System.out.print("Enter the filename to load: ");
             String str = in.nextLine();
-            //Access File
-            File file = new File(str);
-            Scanner reader = new Scanner(file);
-            int size = Integer.parseInt(reader.nextLine()); //set size
             //Set Up New List
             ContactList list = new ContactList();
-            //Load Items to List
-            for (int i = 0; i < size; i++) {
-                list.add(reader.nextLine(), reader.nextLine(), reader.nextLine(), reader.nextLine());
-            }
+            list.loadList(str);
             return list;
         } catch (InputMismatchException e) {
             System.out.println("WARNING: invalid file name");
-        } catch (FileNotFoundException e) {
-            System.out.println("WARNING: file not found");
         } catch (NoSuchElementException e) {
             System.out.println("WARNING: cannot read file");
         } catch (Exception e) {

@@ -33,7 +33,7 @@ public class TaskApp {
                             break;
                         }
                     case 3:
-                        System.exit(0);
+                        return;
                     default:
                         System.out.println("Enter a valid selection");
                         continue;
@@ -50,7 +50,7 @@ public class TaskApp {
                         //viewList;
                         System.out.println("Current Tasks");
                         System.out.println("-------------");
-                        taskList.displayTask();
+                        taskList.display();
                         continue;
                     case 2:
                         //addItem;
@@ -60,14 +60,14 @@ public class TaskApp {
                         //editItem();
                         System.out.println("Current Tasks");
                         System.out.println("-------------");
-                        taskList.displayTask();
+                        taskList.display();
                         editItem(taskList);
                         continue;
                     case 4:
                         //removeItem;
                         System.out.println("Current Tasks");
                         System.out.println("-------------");
-                        taskList.displayTask();
+                        taskList.display();
                         removeItem(taskList);
                         continue;
                     case 5:
@@ -98,7 +98,7 @@ public class TaskApp {
     }
 
 
-    public static void mainMenu() {
+    public void mainMenu() {
         System.out.print("\n" +
                 "Main Menu\n" +
                 "---------\n" +
@@ -108,7 +108,7 @@ public class TaskApp {
                 "3) quit\n" +
                 "\n");
     }
-    public static void subMenu() {
+    public void subMenu() {
         System.out.print("\n" +
                 "List Operation Menu\n" +
                 "---------\n" +
@@ -123,7 +123,7 @@ public class TaskApp {
                 "8) quit to the main menu\n" +
                 "\n");
     }
-    public static void addItem(TaskList list) {
+    public void addItem(TaskList list) {
         try {
             Scanner in = new Scanner(System.in);
             System.out.print("Task title: ");
@@ -133,7 +133,7 @@ public class TaskApp {
             String description = in.nextLine();
             in.reset();
             System.out.print("Task due date (YYYY-MM-DD): ");
-            list.addTask(title, description, in.nextLine());     //Adding Item
+            list.add(title, description, in.nextLine());     //Adding Item
             in.reset();
         }catch (InputMismatchException e) {
             System.out.println("WARNING: enter a valid input");
@@ -142,17 +142,17 @@ public class TaskApp {
             e.printStackTrace();
         }
     }
-    public static void removeItem(TaskList list) {
+    public void removeItem(TaskList list) {
         try {
             Scanner in = new Scanner(System.in);
             System.out.print("Which task will you remove? ");
             int i = in.nextInt();
-            list.removeTask(i);
+            list.remove(i);
         }catch (InputMismatchException e) {
             System.out.println("WARNING: enter a valid input");
         }
     }
-    public static void editItem(TaskList list) {
+    public void editItem(TaskList list) {
         try {
             Scanner in = new Scanner(System.in);
             System.out.println("Which task will you edit? ");
@@ -173,7 +173,7 @@ public class TaskApp {
             e.printStackTrace();
         }
     }
-    public static void markComplete(TaskList list) {
+    public void markComplete(TaskList list) {
         try {
             Scanner in = new Scanner(System.in);
             System.out.print("Which task will you mark as completed? ");
@@ -183,7 +183,7 @@ public class TaskApp {
             System.out.println("WARNING: enter a valid input");
         }
     }
-    public static void unmarkComplete(TaskList list) {
+    public void unmarkComplete(TaskList list) {
         try {
             Scanner in = new Scanner(System.in);
             System.out.print("Which task will you unmark as completed? ");
@@ -193,7 +193,7 @@ public class TaskApp {
             System.out.println("WARNING: enter a valid input");
         }
     }
-    public static void saveList(TaskList list) {
+    public void saveList(TaskList list) {
         try {
             Scanner in = new Scanner(System.in);
             System.out.print("Enter the filename to save as: ");
@@ -204,32 +204,17 @@ public class TaskApp {
             System.out.println("WARNING: invalid file name");
         }
     }
-    public static TaskList loadTaskList() {
+    public TaskList loadTaskList() {
         try {
             //Ask File
             Scanner in = new Scanner(System.in);
             System.out.print("Enter the filename to load: ");
             String str = in.nextLine();
-            //Access File
-            File file = new File(str);
-            Scanner reader = new Scanner(file);
-            int size = Integer.parseInt(reader.nextLine()); //set size
-            //Set Up New List
             TaskList taskList = new TaskList();
-            //Load Items to List
-            for (int i = 0; i < size; i++) {
-                taskList.addTask(reader.nextLine(), reader.nextLine(), reader.nextLine());
-                if(reader.nextLine().equalsIgnoreCase("true")) {
-                    taskList.setTaskComplete(i);
-                }else{
-                    taskList.setTaskIncomplete(i);
-                }
-            }
+            taskList.loadList(str);
             return taskList;
         }catch(InputMismatchException e) {
             System.out.println("WARNING: invalid file name");
-        }catch(FileNotFoundException e) {
-            System.out.println("WARNING: file not found");
         }catch(NoSuchElementException e) {
             System.out.println("WARNING: cannot read file");
         }catch (Exception e) {

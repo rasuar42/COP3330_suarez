@@ -38,6 +38,7 @@ public class ContactList extends TaskList {
     public void saveList(String str) {
         try {
             FileWriter writer = new FileWriter(str);
+            writer.write(2 + "\n");
             writer.write(contactList.size() + "\n");
             for(ContactItem item : contactList){
                 writer.write(item.getFirstName()+ "\n");
@@ -58,6 +59,9 @@ public class ContactList extends TaskList {
         try {
             File file = new File(str);
             Scanner reader = new Scanner(file);
+            if(Integer.parseInt((reader.nextLine())) != 2) {
+                throw new FileNotFoundException();
+            }
             int size = Integer.parseInt(reader.nextLine()); //set size
             ContactItem contact;
             //Load Items to List
@@ -68,11 +72,14 @@ public class ContactList extends TaskList {
             }
             reader.close();
         }catch (FileNotFoundException e) {
-            System.out.println("WARNING: File Not Found");
+            System.out.println("WARNING: File Not Found/Invalid File");
+            contactList.clear();
         }catch (NoSuchElementException e) {
             System.out.println("WARNING: file is corrupted");
+            contactList.clear();
         }catch (Exception e) {
             System.out.println("WARNING: unexpected error");
+            contactList.clear();
         }
     }
 

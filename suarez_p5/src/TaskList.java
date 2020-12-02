@@ -2,9 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 
 public class TaskList {
 
@@ -17,7 +15,7 @@ public class TaskList {
     }
 
     //Helpers
-    public void displayTask() {
+    public void display() {
         for(int i = 0; i < taskList.size(); i++) {
             System.out.print(i + ") ");
             if(taskList.get(i).isComplete()) {
@@ -30,7 +28,7 @@ public class TaskList {
         try {
             System.out.println("Completed Tasks");
             System.out.println("-------------\n");
-            for(int i = 0; i < getSize(); i++) {
+            for(int i = 0; i < taskList.size(); i++) {
                 if(taskList.get(i).isComplete()){
                     System.out.print(i + ") ");
                     System.out.println("[" + taskList.get(i).getTaskDate()+ "] " + taskList.get(i).getTaskTitle() + ": " + taskList.get(i).getTaskDescription() + "\n");
@@ -45,7 +43,7 @@ public class TaskList {
         System.out.println("Uncompleted Tasks");
         System.out.println("-------------\n");
         try {
-            for(int i = 0; i < getSize(); i++) {
+            for(int i = 0; i < size(); i++) {
                 if(! taskList.get(i).isComplete()){
                     System.out.print(i + ") ");
                     System.out.println("[" + taskList.get(i).getTaskDate()+ "] " + taskList.get(i).getTaskTitle() + ": " + taskList.get(i).getTaskDescription() + "\n");
@@ -59,7 +57,8 @@ public class TaskList {
     public void saveList(String str){
         try {
             FileWriter writer = new FileWriter(str);
-            writer.write(taskList.size() + "\n");
+            writer.write(1 + "\n");
+            writer.write(size() + "\n");
             for(TaskItem item : taskList){
                 writer.write(item.getTaskTitle() + "\n");
                 writer.write(item.getTaskDescription() + "\n");
@@ -77,6 +76,9 @@ public class TaskList {
         try {
             File file = new File(str);
             Scanner reader = new Scanner(file);
+            if(Integer.parseInt(reader.nextLine()) != 1) {
+                throw new FileNotFoundException();
+            }
             int size = Integer.parseInt(reader.nextLine()); //set size
             TaskItem item;
             //Load Items to List
@@ -88,18 +90,21 @@ public class TaskList {
             }
             reader.close();
         }catch (FileNotFoundException e) {
-            System.out.println("WARNING: File Not Found");
+            System.out.println("WARNING: File Not Found/Invalid File");
+            taskList.clear();
         }catch (NoSuchElementException e) {
             System.out.println("WARNING: file is corrupted");
+            taskList.clear();
         }catch (Exception e) {
             System.out.println("WARNING: unexpected error");
+            taskList.clear();
         }
     }
-    public void addTask(String title, String description, String date) {
+    public void add(String title, String description, String date) {
         TaskItem item = new TaskItem(title, description, date);
         taskList.add(item);
     }
-    public void removeTask(int i) {
+    public void remove(int i) {
         try {
             taskList.remove(i);
         }catch (IndexOutOfBoundsException e) {
@@ -164,7 +169,7 @@ public class TaskList {
     public ArrayList<TaskItem> getTaskList() {
         return taskList;
     }
-    public int getSize() {
+    public int size() {
         return taskList.size();
     }
 }
